@@ -8,6 +8,8 @@
 
 /* Begin PBXFileReference section */
 		9E6F22F9304CC12200924DE7 /* Bubbly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bubbly.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9EBC85E9304CC58C00950AC2 /* Bubbly.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Bubbly.xcodeproj; sourceTree = "<group>"; };
+		9EBC85F5304CD6EA00950AC2 /* Bubbly.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Bubbly.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -42,6 +44,16 @@
 			children = (
 				9E6F22F9304CC12200924DE7 /* Bubbly.app */,
 			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9EBC85EC304CC58C00950AC2 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9EBC85F8304CD6EA00950AC2 /* Products */ = {
+			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
 		};
@@ -97,6 +109,16 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9E6F22FA304CC12200924DE7 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 9EBC85EC304CC58C00950AC2 /* Products */;
+					ProjectRef = 9EBC85E9304CC58C00950AC2 /* Bubbly.xcodeproj */;
+				},
+				{
+					ProductGroup = 9EBC85F8304CD6EA00950AC2 /* Products */;
+					ProjectRef = 9EBC85F5304CD6EA00950AC2 /* Bubbly.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				9E6F22F8304CC12200924DE7 /* Bubbly */,
@@ -251,6 +273,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V6ZPZG783Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -282,6 +305,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V6ZPZG783Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
