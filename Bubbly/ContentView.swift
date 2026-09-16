@@ -103,7 +103,20 @@ struct ContentView: View
                                         DatePicker("", selection: $selectedEndTime, displayedComponents: .hourAndMinute)
                                             .onChange(of: selectedEndTime)
                                             {
-                                                _, newStart in defaults.set(newStart, forKey: "endTime")
+                                                _, newEnd in
+                                                
+                                                // guarantee that end time is after start time
+                                                if newEnd > selectedStartTime
+                                                {
+                                                    defaults.set(newEnd, forKey: "endTime")
+                                                }
+                                                // otherwise, clamp to start time (if not already)
+                                                else if selectedEndTime != selectedStartTime
+                                                {
+                                                    selectedEndTime = selectedStartTime
+                                                    defaults.set(selectedStartTime, forKey: "endTime")
+                                                }
+                                                
                                             }
                                             .datePickerStyle(.compact)
                                             .labelsHidden()
