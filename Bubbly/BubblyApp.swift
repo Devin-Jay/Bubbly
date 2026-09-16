@@ -2,10 +2,11 @@
 //  BubblyApp.swift
 //  Bubbly
 //
-//  Created by Isabelle Wong on 9/5/26.
+//  Created by Devin Jay on 9/5/26.
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct BubblyApp: App {
