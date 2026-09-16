@@ -6,14 +6,18 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct ContentView: View
 {
+    let notifIdentifier = "bubblynotif"
+    let notifCenter = UNUserNotificationCenter.current()
     let defaults = UserDefaults.standard
-
-    @State private var num:Int? = nil
+    
+    @State private var interval:Int? = nil
     @State private var selectedStartTime = Date()
     @State private var selectedEndTime = Date()
+    @FocusState private var focusItem: Bool
 
     var body: some View
     {
@@ -30,6 +34,19 @@ struct ContentView: View
                         .foregroundStyle(Color(red: 0.4627, green: 0.8392, blue: 1.0))
                 }
                 Spacer()
+                Button(action: {schedule()} )
+                {
+                    ZStack
+                    {
+                        Image("Bubble")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 200, height: 200)
+                        Text("Schedule")
+                            .font(.custom("MarkerFelt-Thin", size: 40))
+                            .foregroundStyle(Color(red: 0.4627, green: 0.8392, blue: 1.0))
+                    }
+                }
                 ZStack
                 {
                     Image("BubbleWrap")
@@ -39,16 +56,33 @@ struct ContentView: View
                         .scaleEffect(x: 1, y: -1)
                         .overlay
                         {
-                            HStack
+                            HStack (spacing: 100)
                             {
                                 ZStack
                                 {
                                     Image("Bubble")
                                         .resizable()
                                         .frame(width: 110, height: 110)
-                                    TextField("Num?", value: $num, format: .number)
+                                    TextField("Interval?", value: $interval, format: .number)
                                         .keyboardType(.numberPad)
-                                        
+                                        .frame(width: 110, height: 110)
+                                        .multilineTextAlignment(.center)
+                                        .onSubmit
+                                        {
+                                            focusItem = false
+                                        }
+                                        .focused($focusItem)
+                                        .onChange(of: interval) { _, newInterval in
+                                                // 2. Only clamp if the user has actually typed something (not nil)
+                                                if let safeInterval = newInterval {
+                                                    let clampedValue = max(0, min(safeInterval, 60))
+                                                    if interval != clampedValue {
+                                                        interval = clampedValue
+                                                    }
+                                                    defaults.set(clampedValue, forKey: "interval")
+                                                }
+                                            }
+                                    
                                 }
                                 VStack
                                 {
@@ -86,13 +120,17 @@ struct ContentView: View
                                             }
                                             .padding(.trailing, 50)
                                 }
-
                             }
+                            .padding(.leading, 45)
                         }
                 }
             }
         }
-        .onAppear
+        .onTapGesture
+        {
+            focusItem = false
+        }
+        .task
                 {
                     if let pastStartTime = defaults.object(forKey: "startTime")
                     {
@@ -103,7 +141,39 @@ struct ContentView: View
                     {
                         selectedEndTime = pastEndTime as! Date
                     }
+                    
+                    
+                    if let pastInterval = defaults.object(forKey: "interval") as? Int
+                    {
+                        interval = pastInterval
+                    }
+                    
+                    await setUpNotifications()
                 }
+    }
+    
+    func setUpNotifications() async
+    {
+        do
+        {
+            try await notifCenter.requestAuthorization(options: [.alert, .sound, .badge])
+        }
+        catch
+        {
+        }
+    }
+    
+    func schedule()
+    {
+        print("scheduling notifications based on data")
+        let content = UNMutableNotificationContent()
+        content.title = "BUBBLY"
+        content.body = "DRINK UP"
+        content.sound = UNNotificationSound.default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let request = UNNotificationRequest(identifier: notifIdentifier, content: content, trigger: trigger)
+        notifCenter.add(request)
     }
 }
 
