@@ -10,11 +10,9 @@ import UserNotifications
 
 struct ContentView: View
 {
-    let notifIdentifier = "bubblynotif"
-    let notifCenter = UNUserNotificationCenter.current()
     let defaults = UserDefaults.standard
     
-    @State private var interval:Int? = nil
+    @State private var interval:Int = 30
     @State private var selectedStartTime = Date()
     @State private var selectedEndTime = Date()
     @FocusState private var focusItem: Bool
@@ -34,7 +32,7 @@ struct ContentView: View
                         .foregroundStyle(Color(red: 0.4627, green: 0.8392, blue: 1.0))
                 }
                 Spacer()
-                Button(action: {schedule()} )
+                Button(action: {schedule(schedulingInterval: Double(interval))})
                 {
                     ZStack
                     {
@@ -73,14 +71,13 @@ struct ContentView: View
                                         }
                                         .focused($focusItem)
                                         .onChange(of: interval) { _, newInterval in
-                                                // 2. Only clamp if the user has actually typed something (not nil)
-                                                if let safeInterval = newInterval {
-                                                    let clampedValue = max(0, min(safeInterval, 60))
+                                                
+                                                    let clampedValue = max(0, min(interval, 60))
                                                     if interval != clampedValue {
                                                         interval = clampedValue
                                                     }
                                                     defaults.set(clampedValue, forKey: "interval")
-                                                }
+                                                
                                             }
                                     
                                 }
@@ -161,19 +158,6 @@ struct ContentView: View
         catch
         {
         }
-    }
-    
-    func schedule()
-    {
-        print("scheduling notifications based on data")
-        let content = UNMutableNotificationContent()
-        content.title = "BUBBLY"
-        content.body = "DRINK UP"
-        content.sound = UNNotificationSound.default
-        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-        let request = UNNotificationRequest(identifier: notifIdentifier, content: content, trigger: trigger)
-        notifCenter.add(request)
     }
 }
 
