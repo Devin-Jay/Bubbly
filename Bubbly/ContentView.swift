@@ -86,7 +86,15 @@ struct ContentView: View
                                     DatePicker("", selection: $selectedStartTime, displayedComponents: .hourAndMinute)
                                         .onChange(of: selectedStartTime)
                                         {
-                                            _, newStart in defaults.set(newStart, forKey: "startTime")
+                                            _, newStart in
+                                            defaults.set(newStart, forKey: "startTime")
+                                            
+                                            // check if end time needs to be updated
+                                            if selectedEndTime < selectedStartTime
+                                            {
+                                                selectedEndTime = selectedStartTime
+                                                defaults.set(selectedStartTime, forKey: "endTime")
+                                            }
                                         }
                                         .datePickerStyle(.compact)
                                         .labelsHidden()
