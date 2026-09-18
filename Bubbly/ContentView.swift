@@ -175,6 +175,11 @@ struct ContentView: View
         do
         {
             try await notifCenter.requestAuthorization(options: [.alert, .sound, .badge])
+            notifCenter.setNotificationCategories([bubblyReminderCategory])
+            content.title = "BUBBLY"
+            content.body = "DRINK UP"
+            content.sound = UNNotificationSound.default
+            content.categoryIdentifier = "BUBBLYREMINDER"
         }
         catch
         {
